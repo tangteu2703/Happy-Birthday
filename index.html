@@ -1,0 +1,722 @@
+<!DOCTYPE HTML>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>❤️ Chúc Mừng Sinh Nhật Em</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital@1&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        html, body {
+            width: 100%; height: 100%;
+            overflow: hidden;
+            background: #000;
+            font-family: 'Montserrat', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        /* ── SVG defs (clip-path) ── */
+        .svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+        /* ── HEART CANVAS (original, full background) ── */
+        #pinkboard {
+            position: absolute;
+            inset: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        /* ── CONFETTI CANVAS ── */
+        #confettiCanvas {
+            position: fixed;
+            inset: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 90;
+        }
+
+        /* ── HEADER TITLE (top area) ── */
+        .header {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: clamp(14px, 4vw, 28px) 16px 0;
+            pointer-events: none;
+        }
+
+        .sub-label {
+            font-size: clamp(9px, 2.5vw, 11px);
+            letter-spacing: 3.5px;
+            font-weight: 600;
+            color: #ffe082;
+            text-shadow: 0 0 10px rgba(255,224,130,0.7), 0 0 24px rgba(255,224,130,0.4);
+            margin-bottom: 4px;
+            opacity: 0;
+            animation: fadeDown 1s ease 0.5s forwards;
+        }
+
+        .main-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(28px, 7.5vw, 56px);
+            font-weight: 700;
+            line-height: 1.1;
+            text-align: center;
+            background: linear-gradient(135deg, #fff 10%, #ffd1dc 45%, #ff758c 75%, #ffe082 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 14px rgba(255,51,119,0.65));
+            opacity: 0;
+            animation: fadeDown 1s ease 0.9s forwards, titleGlow 3s 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes titleGlow {
+            0%  { filter: drop-shadow(0 0 10px rgba(255,51,119,0.5)); }
+            100%{ filter: drop-shadow(0 0 24px rgba(255,105,180,0.9)) drop-shadow(0 0 40px rgba(255,224,130,0.5)); }
+        }
+
+        /* ── CENTER PHOTO ── */
+        .photo-anchor {
+            position: absolute;
+            left: 50%;
+            top: 46%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0;
+            animation: fadeIn 1.2s ease 1.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%,-50%) scale(0.8); }
+            to   { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+        }
+
+        /* Responsive photo size */
+        .photo-wrapper {
+            position: relative;
+            /* scales with viewport: smaller on mobile, bigger on tablet */
+            width:  clamp(120px, 28vw, 180px);
+            height: clamp(120px, 28vw, 180px);
+        }
+
+        /* Animated glowing heart SVG border */
+        .heart-border-svg {
+            position: absolute;
+            top: -7%; left: -7%;
+            width: 114%; height: 114%;
+            pointer-events: none;
+            z-index: 2;
+            animation: borderPulse 1.5s ease-in-out infinite alternate;
+        }
+        @keyframes borderPulse {
+            0%  { filter: drop-shadow(0 0 5px #ff4d88) drop-shadow(0 0 10px #ff1a66); opacity: 0.82; }
+            100%{ filter: drop-shadow(0 0 12px #ff80ab) drop-shadow(0 0 22px #ff4081); opacity: 1; }
+        }
+
+        .heart-stroke-path {
+            stroke-dasharray: 350;
+            animation: strokeMarch 3.5s linear infinite;
+        }
+        @keyframes strokeMarch { to { stroke-dashoffset: -700; } }
+
+        .photo-frame {
+            width: 100%; height: 100%;
+            clip-path: url(#heart-clip);
+            -webkit-clip-path: url(#heart-clip);
+        }
+        .photo-frame img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center 18%;
+            display: block;
+            transform: scale(1.08);
+        }
+
+        /* Crown floating */
+        .crown-badge {
+            position: absolute;
+            top: -13px; right: 1px;
+            background: linear-gradient(135deg, #ffe082, #ffb300);
+            color: #5d3600;
+            font-size: clamp(10px, 2.5vw, 12px);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+            box-shadow: 0 4px 14px rgba(255,179,0,0.5);
+            z-index: 15;
+            animation: floatCrown 2.6s ease-in-out infinite alternate;
+        }
+        @keyframes floatCrown {
+            0%  { transform: translateY(0) rotate(-3deg); }
+            100%{ transform: translateY(-6px) rotate(3deg); }
+        }
+
+        /* ── BOTTOM WISHES (typewriter) ── */
+        .bottom-section {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 18px clamp(14px, 4vw, 28px);
+            pointer-events: none;
+            opacity: 0;
+            animation: fadeUp 1s ease 2.2s forwards;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .wishes-text {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(13px, 3.5vw, 17px);
+            font-style: italic;
+            color: #ffe4e9;
+            text-align: center;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 15px rgba(255,105,180,0.4);
+            line-height: 1.6;
+            min-height: 2.6em;
+            max-width: 540px;
+        }
+        .cursor-blink {
+            display: inline-block;
+            width: 2px; height: 1em;
+            background: #ff3377;
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: blink 0.85s infinite;
+        }
+        @keyframes blink {
+            0%,50%{ opacity:1; } 51%,100%{ opacity:0; }
+        }
+
+        /* ── TOAST / AUTO LOVE QUOTES ── */
+        .toast-bubble {
+            position: fixed;
+            /* Vertically centered slightly above middle for mobile */
+            top: 28%;
+            left: 50%;
+            transform: translateX(-50%) translateY(0) scale(0.9);
+            background: linear-gradient(135deg, rgba(255,20,100,0.88), rgba(180,0,80,0.82));
+            backdrop-filter: blur(12px);
+            padding: clamp(10px,3vw,13px) clamp(18px,5vw,26px);
+            border-radius: 50px;
+            color: #fff;
+            font-weight: 600;
+            font-size: clamp(13px, 3.5vw, 16px);
+            letter-spacing: 0.3px;
+            box-shadow: 0 8px 32px rgba(255,20,147,0.6);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+            z-index: 80;
+            white-space: nowrap;
+            max-width: 92vw;
+            text-align: center;
+        }
+        .toast-bubble.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0) scale(1);
+        }
+
+        /* ── AUTO LETTER OVERLAY (slides up from bottom) ── */
+        .letter-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 70;
+            pointer-events: none;
+            padding: 0 16px 20px;
+        }
+        .letter-card {
+            background: linear-gradient(160deg, rgba(32,8,42,0.95), rgba(14,3,22,0.97));
+            border: 1px solid rgba(255,117,140,0.4);
+            border-radius: 24px 24px 20px 20px;
+            max-width: 460px;
+            width: 100%;
+            padding: clamp(20px,5vw,28px) clamp(18px,5vw,24px);
+            box-shadow: 0 -10px 50px rgba(255,51,119,0.3), 0 0 0 1px rgba(255,255,255,0.05);
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.65s cubic-bezier(0.175,0.885,0.32,1.275), opacity 0.65s ease;
+            color: #fff;
+            text-align: center;
+        }
+        .letter-card.show {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .letter-emoji { font-size: clamp(28px,7vw,38px); margin-bottom: 6px; }
+        .letter-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(22px,6vw,32px);
+            color: #ffd1dc;
+            margin-bottom: 12px;
+            text-shadow: 0 0 12px rgba(255,105,180,0.6);
+        }
+        .letter-body {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(13px,3.4vw,15.5px);
+            line-height: 1.8;
+            color: #fff0f5;
+            text-align: justify;
+            background: rgba(255,255,255,0.04);
+            padding: clamp(14px,4vw,18px);
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+        .letter-sig {
+            text-align: right;
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(18px,5vw,22px);
+            color: #ffe082;
+            margin-top: 10px;
+        }
+        /* Swipe-away hint */
+        .swipe-hint {
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 10px;
+            pointer-events: none;
+        }
+
+        /* ── FLOATING HEARTS ── */
+        .floating-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 85;
+            font-size: clamp(18px,5vw,26px);
+            animation: floatUp 2.2s cubic-bezier(0.25,1,0.5,1) forwards;
+        }
+        @keyframes floatUp {
+            0%  { opacity:1; transform: translate(-50%,-50%) scale(0.5) rotate(0deg); }
+            100%{ opacity:0; transform: translate(calc(-50% + (var(--tx)*1px)), calc(-50% - 140px)) scale(1.6) rotate(var(--rot)); }
+        }
+
+        /* ── MUSIC DOT indicator (top right, tiny) ── */
+        .music-dot {
+            position: absolute;
+            top: 16px; right: 16px;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .music-dot.show { opacity: 1; }
+        .music-dot span {
+            font-size: 11px;
+            color: rgba(255,182,193,0.7);
+            letter-spacing: 1px;
+        }
+        .music-dot .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #ff4081;
+            animation: musicPop 1.2s ease-in-out infinite alternate;
+            box-shadow: 0 0 8px #ff4081;
+        }
+        @keyframes musicPop {
+            0%  { transform: scale(0.7); opacity: 0.6; }
+            100%{ transform: scale(1.3); opacity: 1; }
+        }
+
+        /* ── TOUCH RIPPLE ── */
+        .ripple {
+            position: fixed;
+            pointer-events: none;
+            z-index: 88;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,105,180,0.4) 0%, transparent 70%);
+            transform: translate(-50%,-50%) scale(0);
+            animation: rippleOut 0.7s ease-out forwards;
+        }
+        @keyframes rippleOut {
+            to { transform: translate(-50%,-50%) scale(5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- SVG clip-path -->
+<svg class="svg-defs">
+    <defs>
+        <clipPath id="heart-clip" clipPathUnits="objectBoundingBox">
+            <path d="M 0.5,0.85
+                     C 0.08,0.52 0,0.33 0,0.22
+                     C 0,0.08 0.11,0 0.26,0
+                     C 0.37,0 0.46,0.07 0.5,0.18
+                     C 0.54,0.07 0.63,0 0.74,0
+                     C 0.89,0 1,0.08 1,0.22
+                     C 1,0.33 0.92,0.52 0.5,0.85 Z"/>
+        </clipPath>
+    </defs>
+</svg>
+
+<!-- Original pink heart canvas -->
+<canvas id="pinkboard"></canvas>
+
+<!-- Confetti -->
+<canvas id="confettiCanvas"></canvas>
+
+<!-- Header: title -->
+<header class="header">
+    <div class="sub-label">✨ HAPPY BIRTHDAY TO MY GIRL ✨</div>
+    <h1 class="main-title">Chúc Mừng Sinh Nhật Em ❤️</h1>
+</header>
+
+<!-- Center photo -->
+<div class="photo-anchor" id="photoAnchor">
+    <div class="photo-wrapper">
+        <svg class="heart-border-svg" viewBox="0 0 100 100">
+            <defs>
+                <linearGradient id="hGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%"   stop-color="#ff758c"/>
+                    <stop offset="50%"  stop-color="#ffffff"/>
+                    <stop offset="100%" stop-color="#ff2a7a"/>
+                </linearGradient>
+            </defs>
+            <path class="heart-stroke-path"
+                  d="M 50,85 C 8,52 0,33 0,22 C 0,8 11,0 26,0 C 37,0 46,7 50,18
+                     C 54,7 63,0 74,0 C 89,0 100,8 100,22 C 100,33 92,52 50,85 Z"
+                  fill="none" stroke="url(#hGrad)"
+                  stroke-width="3.5" stroke-linecap="round"
+                  stroke-dashoffset="0"/>
+        </svg>
+        <div class="crown-badge">👑 Princess</div>
+        <div class="photo-frame">
+            <img src="birthday_girl.jpg" alt="Em yêu">
+        </div>
+    </div>
+</div>
+
+<!-- Music indicator -->
+<div class="music-dot" id="musicDot">
+    <div class="dot"></div>
+    <span>NHẠC</span>
+</div>
+
+<!-- Toast / auto love quotes -->
+<div class="toast-bubble" id="toastBubble"></div>
+
+<!-- Auto letter overlay (slides up) -->
+<div class="letter-overlay" id="letterOverlay">
+    <div class="letter-card" id="letterCard">
+        <div class="letter-emoji">💌</div>
+        <h2 class="letter-title">Gửi Em, Cô Gái Bé Nhỏ ❤️</h2>
+        <div class="letter-body">
+            Hôm nay là một ngày vô cùng đặc biệt — ngày mà một thiên thần xinh đẹp và đáng yêu nhất bước đến thế giới này! ✨<br><br>
+            Chúc em tuổi mới luôn ngập tràn niềm vui, nụ cười rạng rỡ luôn nở trên môi và mọi ước mơ em ấp ủ đều sẽ trở thành hiện thực. Cảm ơn em vì đã luôn dịu dàng, luôn mang lại ánh sáng ấm áp và ngọt ngào vào cuộc sống của anh. 💖
+            <div class="letter-sig">Yêu em mãi mãi ❤️</div>
+        </div>
+        <div class="swipe-hint">↓ Chạm nhẹ để đóng</div>
+    </div>
+</div>
+
+<!-- Bottom wishes -->
+<footer class="bottom-section">
+    <div class="wishes-text" id="wishesText"></div><span class="cursor-blink"></span>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   1. ORIGINAL LI XUN HEART PARTICLE ENGINE — 100% giữ nguyên
+   ═══════════════════════════════════════════════════════════════ */
+var settings={particles:{length:500,duration:2,velocity:100,effect:-0.75,size:30}};
+(function(){var b=0,c=["ms","moz","webkit","o"];for(var a=0;a<c.length&&!window.requestAnimationFrame;++a){window.requestAnimationFrame=window[c[a]+"RequestAnimationFrame"];window.cancelAnimationFrame=window[c[a]+"CancelAnimationFrame"]||window[c[a]+"CancelRequestAnimationFrame"]}if(!window.requestAnimationFrame){window.requestAnimationFrame=function(h,e){var d=new Date().getTime(),f=Math.max(0,16-(d-b)),g=window.setTimeout(function(){h(d+f)},f);b=d+f;return g}}if(!window.cancelAnimationFrame){window.cancelAnimationFrame=function(d){clearTimeout(d)}}}());
+var Point=(function(){function Point(x,y){this.x=(typeof x!=="undefined")?x:0;this.y=(typeof y!=="undefined")?y:0}Point.prototype.clone=function(){return new Point(this.x,this.y)};Point.prototype.length=function(length){if(typeof length=="undefined")return Math.sqrt(this.x*this.x+this.y*this.y);this.normalize();this.x*=length;this.y*=length;return this};Point.prototype.normalize=function(){var length=this.length();this.x/=length;this.y/=length;return this};return Point})();
+var Particle=(function(){function Particle(){this.position=new Point();this.velocity=new Point();this.acceleration=new Point();this.age=0}Particle.prototype.initialize=function(x,y,dx,dy){this.position.x=x;this.position.y=y;this.velocity.x=dx;this.velocity.y=dy;this.acceleration.x=dx*settings.particles.effect;this.acceleration.y=dy*settings.particles.effect;this.age=0};Particle.prototype.update=function(deltaTime){this.position.x+=this.velocity.x*deltaTime;this.position.y+=this.velocity.y*deltaTime;this.velocity.x+=this.acceleration.x*deltaTime;this.velocity.y+=this.acceleration.y*deltaTime;this.age+=deltaTime};Particle.prototype.draw=function(context,image){function ease(t){return(--t)*t*t+1}var size=image.width*ease(this.age/settings.particles.duration);context.globalAlpha=1-this.age/settings.particles.duration;context.drawImage(image,this.position.x-size/2,this.position.y-size/2,size,size)};return Particle})();
+var ParticlePool=(function(){var particles,firstActive=0,firstFree=0,duration=settings.particles.duration;function ParticlePool(length){particles=new Array(length);for(var i=0;i<particles.length;i++)particles[i]=new Particle()}ParticlePool.prototype.add=function(x,y,dx,dy){particles[firstFree].initialize(x,y,dx,dy);firstFree++;if(firstFree==particles.length)firstFree=0;if(firstActive==firstFree)firstActive++;if(firstActive==particles.length)firstActive=0};ParticlePool.prototype.update=function(deltaTime){var i;if(firstActive<firstFree)for(i=firstActive;i<firstFree;i++)particles[i].update(deltaTime);if(firstFree<firstActive){for(i=firstActive;i<particles.length;i++)particles[i].update(deltaTime);for(i=0;i<firstFree;i++)particles[i].update(deltaTime)}while(particles[firstActive].age>=duration&&firstActive!=firstFree){firstActive++;if(firstActive==particles.length)firstActive=0}};ParticlePool.prototype.draw=function(context,image){if(firstActive<firstFree)for(i=firstActive;i<firstFree;i++)particles[i].draw(context,image);if(firstFree<firstActive){for(i=firstActive;i<particles.length;i++)particles[i].draw(context,image);for(i=0;i<firstFree;i++)particles[i].draw(context,image)}};return ParticlePool})();
+
+(function(canvas){
+    var context=canvas.getContext("2d"),particles=new ParticlePool(settings.particles.length),particleRate=settings.particles.length/settings.particles.duration,time;
+    function pointOnHeart(t){return new Point(160*Math.pow(Math.sin(t),3),130*Math.cos(t)-50*Math.cos(2*t)-20*Math.cos(3*t)-10*Math.cos(4*t)+25)}
+    var image=(function(){var c=document.createElement("canvas"),ctx=c.getContext("2d");c.width=settings.particles.size;c.height=settings.particles.size;function to(t){var p=pointOnHeart(t);p.x=settings.particles.size/2+p.x*settings.particles.size/350;p.y=settings.particles.size/2-p.y*settings.particles.size/350;return p}ctx.beginPath();var t=-Math.PI,pt=to(t);ctx.moveTo(pt.x,pt.y);while(t<Math.PI){t+=0.01;pt=to(t);ctx.lineTo(pt.x,pt.y)}ctx.closePath();ctx.fillStyle="#ea80b0";ctx.fill();var img=new Image();img.src=c.toDataURL();return img})();
+    function render(){requestAnimationFrame(render);var newTime=new Date().getTime()/1000,deltaTime=newTime-(time||newTime);time=newTime;context.clearRect(0,0,canvas.width,canvas.height);var amount=particleRate*deltaTime;for(var i=0;i<amount;i++){var pos=pointOnHeart(Math.PI-2*Math.PI*Math.random()),dir=pos.clone().length(settings.particles.velocity);particles.add(canvas.width/2+pos.x,canvas.height/2-pos.y,dir.x,-dir.y)}particles.update(deltaTime);particles.draw(context,image)}
+    function onResize(){canvas.width=canvas.clientWidth;canvas.height=canvas.clientHeight}
+    window.onresize=onResize;
+    setTimeout(function(){onResize();render();},10);
+})(document.getElementById("pinkboard"));
+
+
+/* ═══════════════════════════════════════════════════════════════
+   2. CONFETTI ENGINE
+   ═══════════════════════════════════════════════════════════════ */
+var cCv=document.getElementById("confettiCanvas"),cCtx=cCv.getContext("2d"),confettis=[];
+function resizeC(){cCv.width=window.innerWidth;cCv.height=window.innerHeight;}
+window.addEventListener("resize",resizeC);resizeC();
+
+function burstConfetti(cx,cy){
+    var cols=["#ff3377","#ff758c","#ffe082","#00e5ff","#ffffff","#e040fb","#b2ff59","#ffd1dc"];
+    for(var i=0;i<110;i++){
+        confettis.push({x:cx||window.innerWidth/2,y:cy||window.innerHeight*0.46,vx:(Math.random()-0.5)*19,vy:(Math.random()-0.75)*17,size:Math.random()*8+4,color:cols[Math.floor(Math.random()*cols.length)],rot:Math.random()*360,vRot:(Math.random()-0.5)*10,alpha:1,decay:Math.random()*0.009+0.005});
+    }
+}
+function animC(){
+    if(confettis.length){
+        cCtx.clearRect(0,0,cCv.width,cCv.height);
+        for(var i=confettis.length-1;i>=0;i--){
+            var c=confettis[i];c.x+=c.vx;c.y+=c.vy;c.vy+=0.38;c.rot+=c.vRot;c.alpha-=c.decay;
+            if(c.alpha<=0||c.y>cCv.height){confettis.splice(i,1);continue;}
+            cCtx.save();cCtx.globalAlpha=c.alpha;cCtx.translate(c.x,c.y);cCtx.rotate(c.rot*Math.PI/180);cCtx.fillStyle=c.color;cCtx.fillRect(-c.size/2,-c.size/2,c.size,c.size*1.5);cCtx.restore();
+        }
+    }
+    requestAnimationFrame(animC);
+}
+animC();
+
+
+/* ═══════════════════════════════════════════════════════════════
+   3. FLOATING HEARTS
+   ═══════════════════════════════════════════════════════════════ */
+function popHearts(x,y,n){
+    var icons=["❤️","💖","✨","🌸","💕","🎂","👑","💗","🌺","💝"];
+    for(var i=0;i<n;i++){
+        (function(){
+            var el=document.createElement("div");
+            el.className="floating-heart";
+            el.textContent=icons[Math.floor(Math.random()*icons.length)];
+            el.style.left=x+"px";el.style.top=y+"px";
+            el.style.setProperty("--tx",(Math.random()-0.5)*150);
+            el.style.setProperty("--rot",(Math.random()-0.5)*65+"deg");
+            document.body.appendChild(el);
+            setTimeout(function(){el.remove();},2300);
+        })();
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   4. TOAST — AUTO LOVE QUOTES
+   ═══════════════════════════════════════════════════════════════ */
+var toastEl=document.getElementById("toastBubble");
+var toastTimer=null;
+var quotes=[
+    "Chúc mừng sinh nhật em yêu! ❤️",
+    "Em là cô gái xinh đẹp nhất của anh! 💖",
+    "Nụ cười của em là điều ngọt ngào nhất! ✨",
+    "Mọi điều ước của em đều thành hiện thực! 🌸",
+    "Hôm nay công chúa rạng rỡ nhất thế gian! 👑",
+    "Thương em và yêu em nhiều lắm! 💕",
+    "Mỗi ngày có em đều là ngày tuyệt vời nhất! 🎂",
+    "Happy Birthday to the most beautiful girl! 🌺",
+    "Em là điều ngọt ngào nhất của anh! 💝",
+    "Yêu em mãi mãi không bao giờ thay đổi! ❤️"
+];
+var quoteIdx=0;
+
+function showToast(txt,dur){
+    clearTimeout(toastTimer);
+    toastEl.textContent=txt;
+    toastEl.classList.add("show");
+    toastTimer=setTimeout(function(){toastEl.classList.remove("show");},dur||2600);
+}
+
+// Auto fire quotes every 8s
+function autoQuote(){
+    var cx=window.innerWidth/2, cy=window.innerHeight*0.46;
+    showToast(quotes[quoteIdx%quotes.length],2800);
+    popHearts(cx,cy,5);
+    quoteIdx++;
+    setTimeout(autoQuote,8000);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   5. TYPEWRITER WISHES (auto-loop)
+   ═══════════════════════════════════════════════════════════════ */
+var wishes=[
+    "Chúc em tuổi mới rực rỡ, xinh đẹp và hạnh phúc đong đầy! 🌸",
+    "Nụ cười của em là điều ngọt ngào nhất thế gian ✨",
+    "Mong mọi ước mơ của em đều hóa thành hiện thực 💖",
+    "Luôn yêu đời, cười thật tươi và mãi xinh đẹp nhé! 🎂",
+    "Happy Birthday to my beautiful Princess! 👑❤️"
+];
+var wEl=document.getElementById("wishesText"),wI=0,cI=0,del=false;
+function typeStep(){
+    var cur=wishes[wI];
+    if(!del){wEl.textContent=cur.substring(0,cI+1);cI++;if(cI===cur.length){del=true;setTimeout(typeStep,2800);return;}}
+    else{wEl.textContent=cur.substring(0,cI-1);cI--;if(cI===0){del=false;wI=(wI+1)%wishes.length;setTimeout(typeStep,450);return;}}
+    setTimeout(typeStep,del?26:58);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   6. AUTO LETTER SLIDE-UP
+   ═══════════════════════════════════════════════════════════════ */
+var letterCard=document.getElementById("letterCard");
+var letterVisible=false;
+
+function showLetter(){
+    letterCard.classList.add("show");
+    letterVisible=true;
+    // Auto close after 9 seconds
+    setTimeout(hideLetter,9000);
+}
+function hideLetter(){
+    letterCard.classList.remove("show");
+    letterVisible=false;
+}
+
+// Allow tap to dismiss
+document.getElementById("letterCard").addEventListener("click",hideLetter);
+document.getElementById("letterOverlay").addEventListener("click",function(e){
+    if(e.target===this) hideLetter();
+});
+
+
+/* ═══════════════════════════════════════════════════════════════
+   7. AUDIO — Music box (unlock on first touch, then auto-play)
+   ═══════════════════════════════════════════════════════════════ */
+var audioCtx=null,isMusicOn=false,melodyStep=0,musicTimer=null;
+var musicDot=document.getElementById("musicDot");
+
+var melody=[
+    {f:261.63,d:0.35},{f:261.63,d:0.35},{f:293.66,d:0.70},{f:261.63,d:0.70},{f:349.23,d:0.70},{f:329.63,d:1.20},
+    {f:261.63,d:0.35},{f:261.63,d:0.35},{f:293.66,d:0.70},{f:261.63,d:0.70},{f:392.00,d:0.70},{f:349.23,d:1.20},
+    {f:261.63,d:0.35},{f:261.63,d:0.35},{f:523.25,d:0.70},{f:440.00,d:0.70},{f:349.23,d:0.70},{f:329.63,d:0.70},{f:293.66,d:1.00},
+    {f:466.16,d:0.35},{f:466.16,d:0.35},{f:440.00,d:0.70},{f:349.23,d:0.70},{f:392.00,d:0.70},{f:349.23,d:1.40},
+    {f:587.33,d:0.5},{f:440.00,d:0.5},{f:493.88,d:0.5},{f:369.99,d:0.5},{f:392.00,d:0.5},{f:293.66,d:0.5},{f:392.00,d:0.5},{f:440.00,d:1.2}
+];
+
+function initAudio(){
+    if(!audioCtx){var AC=window.AudioContext||window.webkitAudioContext;audioCtx=new AC();}
+    if(audioCtx.state==="suspended")audioCtx.resume();
+}
+
+function playNote(freq,dur){
+    if(!audioCtx||!isMusicOn)return;
+    try{
+        var osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+        osc.type="triangle";osc.frequency.setValueAtTime(freq,audioCtx.currentTime);
+        gain.gain.setValueAtTime(0,audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.16,audioCtx.currentTime+0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+dur*1.5);
+        osc.connect(gain);gain.connect(audioCtx.destination);
+        osc.start();osc.stop(audioCtx.currentTime+dur*1.6);
+    }catch(e){}
+}
+
+function stepMusic(){
+    if(!isMusicOn)return;
+    var note=melody[melodyStep%melody.length];
+    playNote(note.f,note.d);
+    melodyStep++;
+    musicTimer=setTimeout(stepMusic,note.d*920);
+}
+
+function startMusic(){
+    if(isMusicOn)return;
+    initAudio();
+    isMusicOn=true;
+    melodyStep=0;
+    stepMusic();
+    musicDot.classList.add("show");
+}
+
+// Chime sound for celebration
+function playChime(){
+    initAudio();
+    if(!audioCtx)return;
+    [523.25,659.25,783.99,1046.50].forEach(function(f,i){
+        setTimeout(function(){
+            try{var o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type="sine";o.frequency.value=f;g.gain.setValueAtTime(0.07,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.5);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+0.55);}catch(e){}
+        },i*68);
+    });
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   8. TOUCH RIPPLE + HEARTS (interactive delight)
+   ═══════════════════════════════════════════════════════════════ */
+document.addEventListener("click",function(e){
+    // Ripple
+    var r=document.createElement("div");
+    r.className="ripple";
+    r.style.left=e.clientX+"px";r.style.top=e.clientY+"px";
+    r.style.width=r.style.height="80px";
+    document.body.appendChild(r);
+    setTimeout(function(){r.remove();},750);
+
+    // Pop hearts
+    popHearts(e.clientX,e.clientY,3);
+});
+
+document.addEventListener("touchstart",function(e){
+    // Unlock music on first touch (mobile browser requirement)
+    if(!isMusicOn) startMusic();
+});
+
+
+/* ═══════════════════════════════════════════════════════════════
+   9. AUTO-SEQUENCE TIMELINE
+   ═══════════════════════════════════════════════════════════════ */
+// T=2.5s — typewriter starts
+setTimeout(typeStep, 2500);
+
+// T=4s — first love quote
+setTimeout(function(){
+    quoteIdx=0;
+    autoQuote(); // then every 8s automatically
+}, 4000);
+
+// T=6s — first confetti burst + hearts rain from center
+setTimeout(function(){
+    burstConfetti(window.innerWidth/2, window.innerHeight*0.44);
+    popHearts(window.innerWidth/2, window.innerHeight*0.44, 12);
+    playChime();
+}, 6000);
+
+// T=12s — letter slides up
+setTimeout(function(){
+    if(!letterVisible) showLetter();
+}, 12000);
+
+// T=30s — second confetti burst
+setTimeout(function(){
+    burstConfetti(window.innerWidth/2, window.innerHeight*0.44);
+    popHearts(window.innerWidth/2, window.innerHeight*0.44, 10);
+}, 30000);
+
+// Every 25s — periodic confetti
+setInterval(function(){
+    burstConfetti(window.innerWidth/2, window.innerHeight*0.44);
+    popHearts(window.innerWidth*Math.random(), window.innerHeight*0.4, 7);
+}, 25000);
+
+// Every 35s — letter slides back up
+setInterval(function(){
+    if(!letterVisible) showLetter();
+}, 35000);
+
+// Try auto-play music immediately (desktop allows it)
+setTimeout(function(){
+    try{
+        initAudio();
+        startMusic();
+    }catch(e){}
+}, 800);
+</script>
+</body>
+</html>
