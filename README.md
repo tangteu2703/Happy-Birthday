@@ -13,7 +13,7 @@ Dự án hiệu ứng trái tim động **Lighter & Princess (Chiếc Bật Lử
    - Khi chạm / click vào ảnh: Tung mưa tim và hiện những lời khen ngọt ngào ("Em là cô gái xinh đẹp nhất của anh!", "Nụ cười của em làm tan chảy mọi thứ!").
 
 2. **Chữ "Chúc Mừng Sinh Nhật Em ❤️" Sang Trọng & Tinh Tế**:
-   - Phông chữ nghệ thuật lãng mạn cao cấp (*Great Vibes, Playfair Display, Montserrat*).
+   - Phông chữ nghệ thuật lãng mạn cao cấp (_Great Vibes, Playfair Display, Montserrat_).
    - Hiệu ứng ánh kim chuyển sắc hồng - vàng gold lung linh.
    - Hiệu ứng máy đánh chữ (Typewriter) tự động chuyển đổi những lời chúc sinh nhật ý nghĩa nhất.
 
@@ -23,11 +23,11 @@ Dự án hiệu ứng trái tim động **Lighter & Princess (Chiếc Bật Lử
    - ✨ **Bắn Pháo Hoa & Thả Tim**: Tung pháo hoa giấy và tim bay ngập tràn màn hình.
    - Tương tác chạm/click bất cứ đâu trên màn hình đều bung tỏa các chùm tim và ngôi sao lấp lánh.
 
-4. **Hệ Thống Âm Nhạc Hộp Nhạc Du Dương (Web Audio API)**:
-   - Tích hợp sẵn giai điệu *Happy Birthday* phối cùng *Canon in D* êm dịu, không cần mạng internet vẫn phát nhạc trong trẻo mượt mà.
-   - Nút bật/tắt đĩa than xoay tròn nghệ thuật 🎵 ở góc trên.
+5. **Nhạc Nền Lãng Mạn (Bản Tình Ca Đầu Tiên - Duy Khoa)**:
+   - Tích hợp bản nhạc ngọt ngào _Bản Tình Ca Đầu Tiên_ (Chillout Remake Cover), tự động phát mượt mà và lặp lại liên tục.
+   - Nút bật/tắt nhạc thông minh 🎵 ở góc trên bên phải màn hình (chạm/click bất kỳ đâu trên màn hình hoặc bấm nút để phát).
 
-5. **Tương Thích Mọi Thiết Bị**:
+6. **Tương Thích Mọi Thiết Bị**:
    - Hiển thị hoàn hảo, vừa mắt trên cả điện thoại (iPhone, Android), máy tính bảng và máy tính để bàn.
    - Hỗ trợ nút bật toàn màn hình (Fullscreen ⛶).
 
